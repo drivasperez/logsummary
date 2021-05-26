@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest",
+    "test": "jest --env=./test/custom-test-env.js",
     "dev": "rollup -c rollup.config.js -w",
     "build": "rollup -c rollup.config.js --environment BUILD:production",
     "lint": "eslint 'src/**'"
@@ -35,6 +35,7 @@
     "eslint-plugin-react": "^7.23.2",
     "eslint-plugin-react-hooks": "^4.2.0",
     "jest": "^27.0.1",
+    "jest-environment-jsdom": "^27.0.1",
     "prettier": "^2.3.0",
     "rollup": "^2.50.1",
     "rollup-plugin-clean": "^1.0.0",

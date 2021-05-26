@@ -11,9 +11,7 @@ function handleError(error: Error) {
 
 function handleReceiveFile(ab: ArrayBuffer) {
   try {
-    const utf8Decoder = new TextDecoder();
-    const str = utf8Decoder.decode(ab);
-    for (const status of parseLog(str)) {
+    for (const status of parseLog(ab)) {
       const msg: WorkerMessage = { type: "UPDATED", status };
       context.postMessage(msg);
     }

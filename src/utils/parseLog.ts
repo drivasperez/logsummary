@@ -1,4 +1,4 @@
-const BUF_SIZE = 4096; // 4 kb (assuming ascii input)
+const BUF_SIZE = 4096; // 4 kb
 
 export type PathState = {
   views: number;
@@ -6,24 +6,25 @@ export type PathState = {
   ipSet: Set<string>;
 };
 export type LogState = Map<string, PathState>;
-
 /**
- * The log file could conceivably be very long, so we parse it in a streaming fashion.
+ * The log file could conceivably be very long, so we decode and parse it in a streaming fashion.
  * The generator yields periodically to report its current state so the UI can be
- *  updated without having to wait for the entire string to be processed.
+ *  updated without having to wait for the entire buffer to be processed.
  */
-export function* parseLog(input: string, bufSize = BUF_SIZE) {
+export function* parseLog(input: ArrayBuffer, bufSize = BUF_SIZE) {
   const state: LogState = new Map();
+  const decoder = new TextDecoder();
 
   // if there's no input, do nothing.
-  if (input.length === 0) {
+  if (input.byteLength === 0) {
     yield state;
     return;
   }
 
   // if the input is short, handle it in one go.
-  if (bufSize > input.length) {
-    const parts = input.trim().split("\n");
+  if (bufSize > input.byteLength) {
+    const str = decoder.decode(input);
+    const parts = str.trim().split("\n");
     processLines(parts, state);
     yield state;
     return;
@@ -33,11 +34,12 @@ export function* parseLog(input: string, bufSize = BUF_SIZE) {
 
   let buf = "";
   let start = 0;
-  let end = Math.min(bufSize, input.length);
+  let end = Math.min(bufSize, input.byteLength);
 
-  while (end < input.length - 1) {
-    end = Math.min(start + bufSize, input.length - 1);
-    const slice = buf + input.trimEnd().slice(start, end);
+  while (end < input.byteLength - 1) {
+    end = Math.min(start + bufSize, input.byteLength - 1);
+    const str = decoder.decode(input.slice(start, end), { stream: true });
+    const slice = buf + str;
     const parts = slice.split("\n");
     buf = parts.pop() ?? "";
     processLines(parts, state);
