@@ -1,5 +1,6 @@
-import { LogState, parseLog } from "./parseLog";
 import { readFile } from "fs/promises";
+import { LogState, parseLog } from "./parseLog";
+
 describe("parseLog", () => {
   it("parses short log correctly", () => {
     const testString = `/help_page/1 126.318.035.038
@@ -12,7 +13,7 @@ describe("parseLog", () => {
 /help_page/1 722.247.931.582
 `;
 
-    let state: LogState | undefined = undefined;
+    let state: LogState | undefined;
     for (const iterationState of parseLog(testString)) {
       state = iterationState;
     }
@@ -25,7 +26,8 @@ describe("parseLog", () => {
     const logs = await readFile("test/webserver.log", "utf-8");
 
     expect(() => {
-      for (const _ of parseLog(logs, 512)) {
+      for (const status of parseLog(logs, 512)) {
+        status.entries();
       }
     }).not.toThrow();
   });
