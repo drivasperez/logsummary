@@ -1,27 +1,25 @@
 import React, { useEffect } from "react";
+import LogFileForm from "./components/LogFileForm";
+import LogList from "./components/LogList";
 import { HostMessage, WorkerMessage } from "./utils/messages";
-import { LogState } from "./utils/parseLog";
+import { reducer, initialState } from "./utils/reducer";
 
 const worker = new Worker(new URL("./worker.ts", import.meta.url));
 
 export default function App() {
-  const inputRef = React.useRef<HTMLInputElement>(null);
-  const [workerStatus, setWorkerStatus] =
-    React.useState<"pending" | "loading" | "done" | "error">("pending");
-  const [workerState, setWorkerState] = React.useState<undefined | LogState>();
+  const [state, dispatch] = React.useReducer(reducer, initialState);
 
   useEffect(() => {
     const listener = (e: MessageEvent<WorkerMessage>) => {
       switch (e.data.type) {
         case "UPDATED":
-          setWorkerState(e.data.status);
-          setWorkerStatus("loading");
+          dispatch({ type: "UPDATED", logs: e.data.status });
           break;
         case "DONE":
-          setWorkerStatus("done");
+          dispatch({ type: "DONE" });
           break;
         case "ERROR":
-          setWorkerStatus("error");
+          dispatch({ type: "ERROR", error: e.data.error });
           break;
         default:
           throw new Error(
@@ -37,11 +35,7 @@ export default function App() {
     };
   }, []);
 
-  const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
-    e.preventDefault();
-    const file = inputRef.current?.files?.[0];
-    if (!file) return;
-
+  const onFileSubmitted = async (file: File) => {
     const ab = await file.arrayBuffer();
     const msg: HostMessage = { type: "BEGIN", arrayBuffer: ab };
     worker.postMessage(msg, [ab]);
@@ -49,37 +43,17 @@ export default function App() {
 
   return (
     <main>
-      <h1>Hello, world</h1>
-      <p>This is a react app</p>
-
-      <form onSubmit={handleSubmit}>
-        <label htmlFor="upload">
-          Upload file: <input name="upload" ref={inputRef} type="file" />
-        </label>
-        <button type="submit">Submit</button>
-      </form>
-      <p>Status: {workerStatus}</p>
-      <ul>
-        {Array.from(workerState?.entries() ?? [])
-          .sort(
-            ([, aPathState], [, bPathState]) =>
-              bPathState.views - aPathState.views
-          )
-          .map(([path, stats]) => (
-            <li key={path}>
-              <details>
-                <summary>
-                  {path}: {stats.views} views ({stats.uniqueViews} unique)
-                </summary>
-                <ol>
-                  {Array.from(stats.ipSet).map((ip) => (
-                    <li key={path + ip}>{ip}</li>
-                  ))}
-                </ol>
-              </details>
-            </li>
+      <h1>Log Summary</h1>
+      <section>
+        {state.state === "initial" && (
+          <LogFileForm onSubmit={onFileSubmitted} />
+        )}
+        {state.state === "updating" ||
+          (state.state === "done" && (
+            <LogList ordering={state.ordering} logs={state.logs} />
           ))}
-      </ul>
+        {state.state === "error" && <h2>Error!</h2>}
+      </section>
     </main>
   );
 }
