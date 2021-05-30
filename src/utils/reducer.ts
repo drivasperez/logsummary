@@ -30,7 +30,13 @@ export type Action =
   | { type: "UPDATED"; logs: LogState }
   | { type: "DONE" }
   | { type: "ERROR"; error: Error }
-  | { type: "CHANGE_ORDERING"; ordering: ListOrdering };
+  | { type: "CHANGE_ORDERING"; ordering: ListOrdering }
+  | { type: "RESET" };
+
+export const initialState: State = {
+  ordering: "all",
+  state: "initial",
+};
 
 export function reducer(state: State, action: Action): State {
   switch (action.type) {
@@ -46,14 +52,11 @@ export function reducer(state: State, action: Action): State {
       return { state: "error", error: action.error, ordering: state.ordering };
     case "CHANGE_ORDERING":
       return { ...state, ordering: action.ordering };
+    case "RESET":
+      return initialState;
     default:
       throw new Error(
         `Unknown action type passed to reducer: ${(action as any).type}`
       );
   }
 }
-
-export const initialState: State = {
-  ordering: "all",
-  state: "initial",
-};

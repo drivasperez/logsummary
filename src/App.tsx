@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import LogFileForm from "./components/LogFileForm";
-import LogList from "./components/LogList";
+import LogSummary from "./components/LogSummary";
 import { HostMessage, WorkerMessage } from "./utils/messages";
 import { reducer, initialState } from "./utils/reducer";
 
@@ -50,7 +50,7 @@ export default function App() {
         )}
         {state.state === "updating" ||
           (state.state === "done" && (
-            <LogList ordering={state.ordering} logs={state.logs} />
+            <LogSummary state={state} dispatch={dispatch} />
           ))}
         {state.state === "error" && <h2>Error!</h2>}
       </section>

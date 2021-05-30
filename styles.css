@@ -1,0 +1,79 @@
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  padding: 0px;
+}
+
+main {
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+h1 {
+  text-align: center;
+}
+
+.log-file-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.log-file-form label {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.log-file-form button {
+  border: 2px solid black;
+  font-size: 24px;
+  border-radius: 4px;
+  padding: 1rem 2rem;
+}
+
+.log-file-form button:hover {
+  cursor: pointer;
+}
+
+.log-file-form > *:not(:last-child) {
+  padding-bottom: 1rem;
+}
+
+.log-list,
+.ip-list {
+  list-style-type: none;
+  padding-left: 0px;
+}
+
+.log-list summary {
+  cursor: pointer;
+  font-size: 24px;
+}
+
+.log-list > li:not(:last-child) {
+  padding-bottom: 1rem;
+}
+
+.order-by {
+  display: flex;
+  justify-content: flex-end;
+  align-items: baseline;
+}
+
+.order-by > span {
+  margin-right: 4px;
+}
+
+.ip-list {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.ip-list li {
+  font-size: 14px;
+  color: white;
+  background-color: black;
+  padding: 0.25rem 0.5rem;
+  margin: 0.25rem;
+  border-radius: 5000px;
+}

@@ -26,11 +26,13 @@ module.exports = {
   rules: {
     "import/extensions": "off",
     "no-restricted-syntax": "off",
+    "no-unused-vars": "off",
     "react/jsx-filename-extension": [
       1,
       { extensions: [".js", ".jsx", ".tsx"] },
     ],
     "no-use-before-define": "off",
     "@typescript-eslint/no-use-before-define": ["error", { functions: false }],
+    "@typescript-eslint/no-unused-vars": "error",
   },
 };
