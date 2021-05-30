@@ -1,14 +1,16 @@
 const Environment = require("jest-environment-jsdom");
+const { TextEncoder, TextDecoder } = require("util");
 
 /**
- * A custom environment to set the TextEncoder that is required by TensorFlow.js.
+ * A custom environment to enable global TextEncoder and TextDecoder.
  */
 module.exports = class CustomTestEnvironment extends Environment {
   async setup() {
     await super.setup();
     if (typeof this.global.TextEncoder === "undefined") {
-      const { TextEncoder, TextDecoder } = require("util");
       this.global.TextEncoder = TextEncoder;
+    }
+    if (typeof this.global.TextDecoder === "undefined") {
       this.global.TextDecoder = TextDecoder;
     }
   }
