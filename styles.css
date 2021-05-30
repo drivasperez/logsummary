@@ -88,3 +88,9 @@ h1 {
   height: 100%;
   pointer-events: none;
 }
+
+.top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}

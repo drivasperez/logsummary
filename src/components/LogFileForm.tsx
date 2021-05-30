@@ -18,7 +18,15 @@ export default function LogFileForm({ onSubmit }: LogFileFormProps) {
   return (
     <form className="log-file-form" onSubmit={handleSubmit}>
       <label htmlFor="upload">
-        Upload file: <input name="upload" ref={inputRef} type="file" />
+        Upload file:{" "}
+        <input
+          data-testid="upload-input"
+          accept=".txt, .log"
+          multiple={false}
+          name="upload"
+          ref={inputRef}
+          type="file"
+        />
       </label>
       <button type="submit">Submit</button>
     </form>

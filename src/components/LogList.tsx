@@ -16,7 +16,7 @@ export default function LogList({ ordering, logs }: LogListProps) {
   return (
     <ul className="log-list">
       {sortedLogs.map(([path, stats]) => (
-        <li key={path}>
+        <li data-testid="log-entry" key={path}>
           <details>
             <summary>
               {path}: {stats.views} views ({stats.uniqueViews} unique)

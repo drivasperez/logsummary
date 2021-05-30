@@ -1,5 +1,7 @@
 import React, { useEffect } from "react";
 import Confetti from "./components/Confetti";
+import ErrorBoundary from "./components/ErrorBoundary";
+import ErrorView from "./components/ErrorView";
 import LogFileForm from "./components/LogFileForm";
 import LogSummary from "./components/LogSummary";
 import { HostMessage, WorkerMessage } from "./utils/messages";
@@ -42,19 +44,25 @@ export default function App() {
     worker.postMessage(msg, [ab]);
   };
 
+  const tryAgain = () => dispatch({ type: "RESET" });
+
   return (
     <main>
       <h1>Log Summary</h1>
-      <section>
-        {state.state === "initial" && (
-          <LogFileForm onSubmit={onFileSubmitted} />
-        )}
-        {state.state === "updating" ||
-          (state.state === "done" && (
-            <LogSummary state={state} dispatch={dispatch} />
-          ))}
-        {state.state === "error" && <h2>Error!</h2>}
-      </section>
+      <ErrorBoundary>
+        <section>
+          {state.state === "initial" && (
+            <LogFileForm onSubmit={onFileSubmitted} />
+          )}
+          {state.state === "updating" ||
+            (state.state === "done" && (
+              <LogSummary state={state} dispatch={dispatch} />
+            ))}
+          {state.state === "error" && (
+            <ErrorView message={state.error} onTryAgain={tryAgain} />
+          )}
+        </section>
+      </ErrorBoundary>
       <Confetti status={state.state} />
     </main>
   );

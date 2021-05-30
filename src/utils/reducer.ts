@@ -16,7 +16,7 @@ export type DoneState = {
 
 export type ErrorState = {
   state: "error";
-  error: Error;
+  error: string;
 };
 
 export type State = { ordering: ListOrdering } & (
@@ -29,7 +29,7 @@ export type State = { ordering: ListOrdering } & (
 export type Action =
   | { type: "UPDATED"; logs: LogState }
   | { type: "DONE" }
-  | { type: "ERROR"; error: Error }
+  | { type: "ERROR"; error: string }
   | { type: "CHANGE_ORDERING"; ordering: ListOrdering }
   | { type: "RESET" };
 

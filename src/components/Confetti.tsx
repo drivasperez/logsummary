@@ -4,6 +4,7 @@ import confetti from "canvas-confetti";
 type ConfettiProps = {
   status: "initial" | "updating" | "done" | "error";
 };
+
 export default function Confetti({ status }: ConfettiProps) {
   const [ref, setRef] = React.useState<HTMLCanvasElement | null>(null);
   const confettiRef = React.useRef<confetti.CreateTypes | null>();
@@ -19,7 +20,7 @@ export default function Confetti({ status }: ConfettiProps) {
 
   React.useEffect(() => {
     if (status === "done") {
-      confettiRef.current?.({ particleCount: 100, spread: 160 });
+      confettiRef.current?.({ particleCount: 150, spread: 160 });
     }
   }, [status]);
   return <canvas className="confetti" ref={setRef} />;

@@ -21,13 +21,15 @@ export default function LogSummary({ state, dispatch }: LogSummaryProps) {
 
   return (
     <section className="log-summary">
-      <h2>Results</h2>
-      <div className="order-by">
-        <span>Order by </span>
-        <OrderToggle
-          ordering={state.ordering}
-          changeOrdering={changeOrdering}
-        />
+      <div className="top-bar">
+        <h2>Results</h2>
+        <div className="order-by">
+          <span>Order by </span>
+          <OrderToggle
+            ordering={state.ordering}
+            changeOrdering={changeOrdering}
+          />
+        </div>
       </div>
       <LogList ordering={state.ordering} logs={state.logs} />
       <button type="button" onClick={back}>

@@ -5,7 +5,7 @@ import { parseLog } from "./utils/parseLog";
 const context: Worker = self as any;
 
 function handleError(error: Error) {
-  const msg: WorkerMessage = { type: "ERROR", error };
+  const msg: WorkerMessage = { type: "ERROR", error: error.message };
   context.postMessage(msg);
 }
 
