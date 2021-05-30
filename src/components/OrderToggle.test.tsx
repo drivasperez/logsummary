@@ -12,10 +12,10 @@ describe("OrderToggle", () => {
 
     const options = screen.getAllByRole("option");
     expect(options.length).toBe(2);
-    expect(options[0]).toHaveTextContent("unique views");
-    expect(options[0]).toHaveValue("unique");
-    expect(options[1]).toHaveTextContent("total views");
-    expect(options[1]).toHaveValue("all");
+    expect(options[0]).toHaveTextContent("total views");
+    expect(options[0]).toHaveValue("all");
+    expect(options[1]).toHaveTextContent("unique views");
+    expect(options[1]).toHaveValue("unique");
 
     const toggle = screen.getByRole("combobox");
     fireEvent.change(toggle, { target: { value: "unique" } });

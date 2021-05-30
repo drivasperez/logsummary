@@ -17,8 +17,8 @@ export default function OrderToggle({
   };
   return (
     <select value={ordering} onChange={handleChange}>
-      <option value="unique">unique views</option>
       <option value="all">total views</option>
+      <option value="unique">unique views</option>
     </select>
   );
 }
