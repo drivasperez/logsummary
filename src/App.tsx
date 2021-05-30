@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import Confetti from "./components/Confetti";
 import LogFileForm from "./components/LogFileForm";
 import LogSummary from "./components/LogSummary";
 import { HostMessage, WorkerMessage } from "./utils/messages";
@@ -54,6 +55,7 @@ export default function App() {
           ))}
         {state.state === "error" && <h2>Error!</h2>}
       </section>
+      <Confetti status={state.state} />
     </main>
   );
 }
