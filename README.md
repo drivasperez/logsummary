@@ -1,4 +1,4 @@
-# Log Summary - Smart Pension Test
+# Log Summary
 
 ## Commands
 
